@@ -1,2 +1,3 @@
-// React context providers will go here
-// This file serves as a placeholder for the context directory
+// Export all context providers
+export { AuthProvider, useAuth } from './AuthContext';
+

@@ -1,2 +1,3 @@
-// Common reusable components will go here
-// This file serves as a placeholder for the components directory
+// Export all components
+export { default as ProtectedRoute } from './ProtectedRoute';
+export { default as Navbar } from './Navbar';

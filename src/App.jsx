@@ -1,24 +1,43 @@
-import { AuthProvider } from './context/AuthContext'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute, Navbar } from './components';
+import { Home, Login, Register, Bookings, Profile } from './pages';
+import './App.css';
 
 function App() {
   return (
-    <AuthProvider>
-      <div className="App">
-        <header className="App-header">
-          <h1>🎫 Booking System</h1>
-          <p>Welcome to your booking management system</p>
-          <div className="info-box">
-            <h2>Status: Setup Complete ✓</h2>
-            <p>React frontend is ready!</p>
-            <p>Backend API: <code>http://127.0.0.1:8000</code></p>
-            <p>Authentication Context: <code>✓ Active</code></p>
-          </div>
-        </header>
-      </div>
-    </AuthProvider>
-  )
+    <Router>
+      <AuthProvider>
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route
+              path="/bookings"
+              element={
+                <ProtectedRoute>
+                  <Bookings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+      </AuthProvider>
+    </Router>
+  );
 }
 
-export default App
+export default App;
+
 

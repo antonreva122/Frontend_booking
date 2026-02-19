@@ -20,6 +20,12 @@ jobs:
         node-version: '20.x'
         cache: 'npm'
     
+    - name: Upgrade npm
+      run: npm install -g npm@latest
+
+    - name: Clean npm cache
+      run: npm cache clean --force
+
     - name: Install dependencies
       run: npm install --legacy-peer-deps --prefer-offline --no-audit
     

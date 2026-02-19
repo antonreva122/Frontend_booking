@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 import { bookingAPI } from '../services/bookingService';
 import { handleApiError } from '../utils/errorUtils';
 import { formatDate, formatTime } from '../utils/dateUtils';
@@ -6,6 +7,7 @@ import BookingForm from '../components/BookingForm';
 import './Bookings.css';
 
 function Bookings() {
+  const { user } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -14,8 +16,10 @@ function Bookings() {
   const [filter, setFilter] = useState('all'); // all, upcoming, past
 
   useEffect(() => {
+    // Clear bookings when user changes
+    setBookings([]);
     fetchBookings();
-  }, [filter]);
+  }, [filter, user]); // Re-fetch when filter OR user changes
 
   const fetchBookings = async () => {
     setLoading(true);

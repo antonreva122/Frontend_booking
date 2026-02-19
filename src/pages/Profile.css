@@ -1,0 +1,33 @@
+.profile-container {
+  min-height: calc(100vh - 80px);
+  background: #f5f5f5;
+  padding: 2rem;
+}
+
+.profile-header {
+  margin-bottom: 2rem;
+}
+
+.profile-header h1 {
+  color: #333;
+  font-size: 2rem;
+}
+
+.profile-placeholder {
+  background: white;
+  padding: 4rem 2rem;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.profile-placeholder p {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0.5rem 0;
+}
+
+.profile-placeholder p:first-child {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}

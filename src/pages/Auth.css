@@ -54,6 +54,27 @@
   font-size: 0.9rem;
 }
 
+.success-message {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #4caf50;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.success-message strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.success-message p {
+  margin: 0;
+  line-height: 1.5;
+}
+
 .auth-form {
   display: flex;
   flex-direction: column;

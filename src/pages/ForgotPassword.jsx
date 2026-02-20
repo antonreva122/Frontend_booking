@@ -16,7 +16,7 @@ function ForgotPassword() {
     setSuccess(false);
 
     try {
-      await api.post('/users/password-reset/', { email });
+      await api.post('/users/password/reset/', { email });
       setSuccess(true);
       setEmail('');
     } catch (err) {

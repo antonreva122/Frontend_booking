@@ -64,6 +64,7 @@ function ResetPassword() {
       await api.post('/users/password/reset/confirm/', {
         token: token,
         new_password: formData.password,
+        new_password2: formData.confirmPassword,
       });
 
       // Success - redirect to login

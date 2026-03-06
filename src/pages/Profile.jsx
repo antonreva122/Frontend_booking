@@ -153,10 +153,16 @@ function Profile() {
       const uploadResponse = await authAPI.uploadProfileImage(formData);
       console.log('Upload response:', uploadResponse);
       
-      // Simply update the profile_image in the current user object
-      const updatedUser = { ...user, profile_image: uploadResponse.profile_image };
-      setUser(updatedUser);
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      // Use functional update to ensure we get latest state
+      setUser(prevUser => {
+        const updated = {
+          ...prevUser,
+          profile_image: uploadResponse.profile_image
+        };
+        localStorage.setItem('user', JSON.stringify(updated));
+        return updated;
+      });
+      
       setSuccess('Profile image uploaded successfully!');
       
       // Reset file input
@@ -184,10 +190,16 @@ function Profile() {
       await authAPI.deleteProfileImage();
       console.log('Delete successful');
       
-      // Update user object to remove profile_image
-      const updatedUser = { ...user, profile_image: null };
-      setUser(updatedUser);
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      // Use functional update
+      setUser(prevUser => {
+        const updated = {
+          ...prevUser,
+          profile_image: null
+        };
+        localStorage.setItem('user', JSON.stringify(updated));
+        return updated;
+      });
+      
       setSuccess('Profile image deleted successfully!');
     } catch (err) {
       console.error('Delete error:', err);

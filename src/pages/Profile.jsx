@@ -150,15 +150,21 @@ function Profile() {
     formData.append('image', file);
 
     try {
-      await authAPI.uploadProfileImage(formData);
-      // Reload user profile to get updated image URL
-      const updatedUser = await authAPI.getProfile();
+      const uploadResponse = await authAPI.uploadProfileImage(formData);
+      console.log('Upload response:', uploadResponse);
+      
+      // Simply update the profile_image in the current user object
+      const updatedUser = { ...user, profile_image: uploadResponse.profile_image };
       setUser(updatedUser);
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setSuccess('Profile image uploaded successfully!');
+      
       // Reset file input
-      e.target.value = '';
+      if (e.target) {
+        e.target.value = '';
+      }
     } catch (err) {
+      console.error('Upload error:', err);
       setError(handleApiError(err));
     } finally {
       setImageLoading(false);
@@ -176,12 +182,15 @@ function Profile() {
 
     try {
       await authAPI.deleteProfileImage();
-      // Reload user profile to reflect deletion
-      const updatedUser = await authAPI.getProfile();
+      console.log('Delete successful');
+      
+      // Update user object to remove profile_image
+      const updatedUser = { ...user, profile_image: null };
       setUser(updatedUser);
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setSuccess('Profile image deleted successfully!');
     } catch (err) {
+      console.error('Delete error:', err);
       setError(handleApiError(err));
     } finally {
       setImageLoading(false);

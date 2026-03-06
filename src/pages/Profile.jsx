@@ -219,7 +219,7 @@ function Profile() {
               )}
             </div>
             <div className="profile-image-actions">
-              <label className="btn-upload" disabled={imageLoading}>
+              <label className={`btn-upload ${imageLoading ? 'disabled' : ''}`}>
                 <input
                   type="file"
                   accept="image/jpeg,image/png,image/jpg,image/webp"

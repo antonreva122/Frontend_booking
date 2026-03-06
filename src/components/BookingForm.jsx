@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { bookingAPI, resourceAPI } from '../services/bookingService';
 import { handleApiError } from '../utils/errorUtils';
 import { getTodayFormatted } from '../utils/dateUtils';
@@ -45,7 +45,7 @@ function BookingForm({ booking, onClose }) {
     }
   };
 
-  const checkAvailability = async () => {
+  const checkAvailability = useCallback(async () => {
     if (!formData.resource || !formData.booking_date) return;
 
     try {
@@ -57,13 +57,13 @@ function BookingForm({ booking, onClose }) {
     } catch (err) {
       console.error('Error checking availability:', err);
     }
-  };
+  }, [formData.resource, formData.booking_date]);
 
   useEffect(() => {
     if (formData.resource && formData.booking_date) {
       checkAvailability();
     }
-  }, [formData.resource, formData.booking_date]);
+  }, [formData.resource, formData.booking_date, checkAvailability]);
 
   const handleChange = (e) => {
     setFormData({

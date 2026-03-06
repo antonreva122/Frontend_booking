@@ -77,7 +77,7 @@ function ForgotPassword() {
           </p>
           {success && (
             <p style={{ marginTop: '10px' }}>
-              Didn't receive it? <a href="#" onClick={(e) => { e.preventDefault(); setSuccess(false); }}>Try again</a>
+              Didn&apos;t receive it? <a href="#" onClick={(e) => { e.preventDefault(); setSuccess(false); }}>Try again</a>
             </p>
           )}
         </div>

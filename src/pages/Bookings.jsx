@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { bookingAPI } from '../services/bookingService';
 import { handleApiError } from '../utils/errorUtils';
@@ -15,13 +15,7 @@ function Bookings() {
   const [editingBooking, setEditingBooking] = useState(null);
   const [filter, setFilter] = useState('all'); // all, upcoming, past
 
-  useEffect(() => {
-    // Clear bookings when user changes
-    setBookings([]);
-    fetchBookings();
-  }, [filter, user]); // Re-fetch when filter OR user changes
-
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     setLoading(true);
     setError('');
     
@@ -53,7 +47,13 @@ function Bookings() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filter]);
+
+  useEffect(() => {
+    // Clear bookings when user changes
+    setBookings([]);
+    fetchBookings();
+  }, [filter, user, fetchBookings]); // Re-fetch when filter OR user changes
 
   const handleCreateBooking = () => {
     setEditingBooking(null);

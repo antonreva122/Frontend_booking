@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect } from 'react';
 import { authAPI } from '../services/authService';
 import { storeAuthData, clearAuthData, getStoredUser, isAuthenticated } from '../utils/authUtils';

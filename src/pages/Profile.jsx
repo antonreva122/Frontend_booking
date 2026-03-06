@@ -9,6 +9,7 @@ function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   
@@ -123,6 +124,63 @@ function Profile() {
     setSuccess('');
   };
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      setError('Invalid file type. Only JPEG, PNG, and WebP images are allowed.');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      setError('File too large. Maximum size is 5MB.');
+      return;
+    }
+
+    setImageLoading(true);
+    setError('');
+    setSuccess('');
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const response = await authAPI.uploadProfileImage(formData);
+      // Update user context with new image URL
+      setUser({ ...user, profile_image: response.profile_image });
+      setSuccess('Profile image uploaded successfully!');
+    } catch (err) {
+      setError(handleApiError(err));
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
+  const handleImageDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete your profile image?')) {
+      return;
+    }
+
+    setImageLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      await authAPI.deleteProfileImage();
+      setUser({ ...user, profile_image: null });
+      setSuccess('Profile image deleted successfully!');
+    } catch (err) {
+      setError(handleApiError(err));
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
   if (!user) {
     return (
       <div className="profile-container">
@@ -141,6 +199,52 @@ function Profile() {
       {success && <div className="success-message">{success}</div>}
 
       <div className="profile-content">
+        {/* Profile Image Section */}
+        <div className="profile-card">
+          <div className="card-header">
+            <h2>Profile Picture</h2>
+          </div>
+          <div className="profile-image-section">
+            <div className="profile-image-container">
+              {user.profile_image ? (
+                <img 
+                  src={user.profile_image} 
+                  alt="Profile" 
+                  className="profile-image"
+                />
+              ) : (
+                <div className="profile-image-placeholder">
+                  <span>{user.first_name?.[0]}{user.last_name?.[0]}</span>
+                </div>
+              )}
+            </div>
+            <div className="profile-image-actions">
+              <label className="btn-upload" disabled={imageLoading}>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/jpg,image/webp"
+                  onChange={handleImageUpload}
+                  disabled={imageLoading}
+                  style={{ display: 'none' }}
+                />
+                {imageLoading ? 'Uploading...' : 'Upload Image'}
+              </label>
+              {user.profile_image && (
+                <button
+                  className="btn-delete"
+                  onClick={handleImageDelete}
+                  disabled={imageLoading}
+                >
+                  Delete Image
+                </button>
+              )}
+              <p className="image-help-text">
+                Max size: 5MB. Formats: JPEG, PNG, WebP
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Profile Information Section */}
         <div className="profile-card">
           <div className="card-header">

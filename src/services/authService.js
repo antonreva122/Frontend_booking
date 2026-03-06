@@ -53,4 +53,20 @@ export const authAPI = {
     });
     return response.data;
   },
+
+  // Upload profile image
+  uploadProfileImage: async (formData) => {
+    const response = await api.post('/users/profile/image/upload/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  // Delete profile image
+  deleteProfileImage: async () => {
+    const response = await api.delete('/users/profile/image/delete/');
+    return response.data;
+  },
 };

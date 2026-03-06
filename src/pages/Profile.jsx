@@ -150,10 +150,14 @@ function Profile() {
     formData.append('image', file);
 
     try {
-      const response = await authAPI.uploadProfileImage(formData);
-      // Update user context with new image URL
-      setUser({ ...user, profile_image: response.profile_image });
+      await authAPI.uploadProfileImage(formData);
+      // Reload user profile to get updated image URL
+      const updatedUser = await authAPI.getProfile();
+      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
       setSuccess('Profile image uploaded successfully!');
+      // Reset file input
+      e.target.value = '';
     } catch (err) {
       setError(handleApiError(err));
     } finally {
@@ -172,7 +176,10 @@ function Profile() {
 
     try {
       await authAPI.deleteProfileImage();
-      setUser({ ...user, profile_image: null });
+      // Reload user profile to reflect deletion
+      const updatedUser = await authAPI.getProfile();
+      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
       setSuccess('Profile image deleted successfully!');
     } catch (err) {
       setError(handleApiError(err));

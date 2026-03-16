@@ -62,8 +62,10 @@ function Profile() {
     setSuccess('');
 
     try {
-      const updatedUser = await authAPI.updateProfile(profileData);
+      const response = await authAPI.updateProfile(profileData);
+      const updatedUser = response.user;
       setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
       setSuccess('Profile updated successfully!');
       setIsEditing(false);
     } catch (err) {
@@ -150,9 +152,11 @@ function Profile() {
     formData.append('image', file);
 
     try {
-      await authAPI.uploadProfileImage(formData);
-      // Reload the page to show updated image
-      window.location.reload();
+      const response = await authAPI.uploadProfileImage(formData);
+      setUser({ ...user, profile_image: response.profile_image });
+      localStorage.setItem('user', JSON.stringify({ ...user, profile_image: response.profile_image }));
+      setSuccess('Profile image uploaded successfully!');
+      setImageLoading(false);
     } catch (err) {
       setError(handleApiError(err));
       setImageLoading(false);
@@ -170,8 +174,10 @@ function Profile() {
 
     try {
       await authAPI.deleteProfileImage();
-      // Reload the page to show changes
-      window.location.reload();
+      setUser({ ...user, profile_image: null });
+      localStorage.setItem('user', JSON.stringify({ ...user, profile_image: null }));
+      setSuccess('Profile image deleted successfully!');
+      setImageLoading(false);
     } catch (err) {
       setError(handleApiError(err));
       setImageLoading(false);

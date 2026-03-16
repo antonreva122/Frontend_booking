@@ -30,7 +30,18 @@ function Navbar() {
             Profile
           </Link>
           <div className="navbar-user">
-            <span>{user?.email}</span>
+            {user?.profile_image ? (
+              <img 
+                src={user.profile_image} 
+                alt="Profile" 
+                className="navbar-avatar"
+              />
+            ) : (
+              <div className="navbar-avatar-placeholder">
+                {user?.first_name?.[0]}{user?.last_name?.[0]}
+              </div>
+            )}
+            <span className="navbar-email">{user?.email}</span>
           </div>
           <button onClick={handleLogout} className="navbar-logout">
             Logout

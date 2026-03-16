@@ -128,7 +128,6 @@ function BookingForm({ booking, onClose }) {
               {resources.map((resource) => (
                 <option key={resource.id} value={resource.id}>
                   {resource.name} ({resource.resource_type})
-                  {resource.price_per_hour && ` - $${resource.price_per_hour}/hr`}
                 </option>
               ))}
             </select>

@@ -178,15 +178,8 @@ function Bookings() {
 
                 <div className="booking-info">
                   <span className="info-label">⏱️ Duration:</span>
-                  <span>{booking.duration_hours} hours</span>
+                  <span>{booking.duration_hours}</span>
                 </div>
-
-                {booking.resource_details?.price_per_hour && (
-                  <div className="booking-info">
-                    <span className="info-label">💰 Price:</span>
-                    <span>${booking.total_price?.toFixed(2)}</span>
-                  </div>
-                )}
 
                 {booking.notes && (
                   <div className="booking-info">
